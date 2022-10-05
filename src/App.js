@@ -1,33 +1,52 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
-import contacts from './contacts.json'
+import allContacts from './contacts.json'
+import { useState } from 'react'
 
-const contactsArray = contacts.slice(0, 5);
+
+const contactsArray = allContacts.slice(0, 5);
 
 
 function App() {
+  const [contact, setContact] = useState(contactsArray)
+
+  
+
+  const randomContact = allContacts[Math.floor(Math.random() * allContacts.length)];
+  console.log(randomContact)
+
+
+  const deleteContact = contactId => {
+    const filteredContacts = contactsArray.filter((contact, contactId) => {
+      return contact.id !== contactId
+    })
+
+    setContact(filteredContacts)
+  }
+  
+
+
   return (
     <div className="App">
+
       <h2><u>It works like gold.</u></h2>
-      {contactsArray.map(elem => {
+
+      <button onClick={() => setContact(contact)}>Add Random Contact</button>
+
+      {contactsArray.map(contact => {
         return (
-          <div>
-            <table>
-              <ul>
-                <li><img src={elem.pictureUrl} alt={elem.name}></img></li>
-                <li>{elem.name}</li>
-                <li>{elem.popularity}</li>
+          <div key={contact.id}>
+                <img src={contact.pictureUrl} alt={contact.name} height={100}></img>
+                <p>{contact.name}</p>
+                <p>{contact.popularity}</p>
               
-                {elem.wonEmmy ? <p>🏆</p> : <p>Not yet</p>}
-              </ul>
+                {contact.wonEmmy ? <p>🏆</p> : <p>Not yet</p>}
+                <button onClick={() => deleteContact(contact.id) }>Remove Contact</button>
 
 
-            </table>
           </div>
-
         )
       })}
-
 
 
 
